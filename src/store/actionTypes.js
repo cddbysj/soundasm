@@ -1,0 +1,11 @@
+export const FETCH_WORKS = "FETCH_WORKS";
+export const FETCH_WORKS_DONE = "FETCH_WORKS";
+export const FETCH_WORKS_FAIL = "FETCH_WORKS";
+export const FETCH_AUTHORS = "FETCH_AUTHORS";
+export const FETCH_TAGS = "FETCH_TAGS";
+export const FETCH_LANGUAGES = "FETCH_LANGUAGES";
+
+export const FETCH_TODOS = "FETCH_TODOS";
+export const FETCH_TODOS_DONE = "FETCH_TODOS_DONE";
+export const FETCH_TODOS_FAILED = "FETCH_TODOS_FAILED";
+export const ADD_TODO = "ADD_TODO";
