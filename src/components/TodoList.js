@@ -26,6 +26,6 @@ const TodoList = ({ todos, addTodo, fetchTodos }) => {
   );
 };
 
-const mapStateToProps = state => state;
+const mapStateToProps = state => ({ todos: state.todos });
 
 export default connect(mapStateToProps, { addTodo, fetchTodos })(TodoList);
