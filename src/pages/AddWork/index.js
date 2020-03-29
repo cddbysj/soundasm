@@ -1,73 +1,80 @@
 // 添加一个作品
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { Form, Input, Radio, Rate, Button, Select } from "antd";
-import { addWork } from "store/actions";
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Form, Input, Radio, Rate, Button, Select } from 'antd';
+import { addWork, fetchTags, addTags, addAuthors } from 'store/actions';
 
 const { TextArea } = Input;
 const { Option } = Select;
 
 const layout = {
   labelCol: { span: 6 },
-  wrapperCol: { span: 12 }
+  wrapperCol: { span: 12 },
 };
 
 const tailLayout = {
   wrapperCol: {
     offset: 6,
-    span: 6
-  }
+    span: 6,
+  },
 };
 
-const tagsSelections = [
-  "纯爱",
-  "治愈",
-  "舔耳",
-  "内射",
-  "调教",
-  "环绕音",
-  "耳语"
-].map(tag => <Option key={tag}>{tag}</Option>);
-
 const languageSelections = [
-  "English",
-  "Japanese",
-  "Chinese",
-  "Korean",
-  "Spanish",
-  "French"
+  'English',
+  'Japanese',
+  'Chinese',
+  'Korean',
+  'Spanish',
+  'French',
 ].map(language => <Option key={language}>{language}</Option>);
 
 const authorsSelections = [].map(author => (
   <Option key={author}>{author}</Option>
 ));
 
-const initialValues = {
-  title: "",
-  author: [],
-  rj: null,
-  url: null,
-  imageSrc: null,
-  Illustrator: null,
-  description: null,
-  tags: ["治愈", "舔耳", "低语", "环绕音", "纯爱"],
-  rating: "R18",
-  star: 4,
-  language: ["Japanese"],
-  script: null
-};
+const AddWork = ({ tags, fetchTags, addTags, addWork, addAuthors }) => {
+  // 当前作品要添加的标签
+  const [currentTags, setCurrentTags] = useState([]);
+  const [currentAuthors, setCurrentAuthors] = useState([]);
 
-const AddWork = ({ addWork }) => {
-  const [script, setScript] = useState(null);
-
-  const onFinish = values => {
-    console.log("提交的表格数据", values);
-    setScript(values.script);
-    addWork(values);
+  const { isFetching, error, items } = tags;
+  const initialValues = {
+    title: '',
+    author: [],
+    rj: null,
+    url: null,
+    imageSrc: null,
+    Illustrator: null,
+    description: null,
+    tags: items,
+    rating: 'R18',
+    star: 4,
+    hasGot: true,
+    language: ['Japanese'],
+    script: null,
   };
 
-  const handleSelectChange = value => {
-    console.log(value);
+  useEffect(() => {
+    fetchTags();
+  }, [fetchTags]);
+
+  const onFinish = values => {
+    console.log('提交的表格数据', values);
+    Promise.all([
+      addWork(values),
+      addTags(currentTags),
+      addAuthors(currentAuthors),
+    ]);
+  };
+
+  const handleTagsChange = value => {
+    const tags = value.map(v => v.trim()).filter(v => v);
+    setCurrentTags(tags);
+  };
+
+  const handleAuthorsChange = value => {
+    const authors = value.map(v => v.trim()).filter(v => v);
+    setCurrentAuthors(authors);
   };
 
   return (
@@ -78,8 +85,8 @@ const AddWork = ({ addWork }) => {
         rules={[
           {
             required: true,
-            message: "请输入标题"
-          }
+            message: '请输入标题',
+          },
         ]}
       >
         <Input />
@@ -90,11 +97,17 @@ const AddWork = ({ addWork }) => {
         rules={[
           {
             required: true,
-            message: "请输入作者"
-          }
+            message: '请输入作者',
+          },
         ]}
       >
-        <Select mode="tags">{authorsSelections}</Select>
+        <Select
+          mode="tags"
+          onChange={handleAuthorsChange}
+          tokenSeparators={['/']}
+        >
+          {authorsSelections}
+        </Select>
       </Form.Item>
       <Form.Item label="链接" name="url">
         <Input />
@@ -119,24 +132,27 @@ const AddWork = ({ addWork }) => {
         <TextArea autoSize></TextArea>
       </Form.Item>
       <Form.Item label="语言" name="language">
-        <Select
-          mode="tags"
-          style={{ width: "100%" }}
-          onChange={handleSelectChange}
-          tokenSeparators={[",", " ", "，"]}
-        >
+        <Select mode="tags" style={{ width: '100%' }}>
           {languageSelections}
         </Select>
       </Form.Item>
       <Form.Item label="标签" name="tags">
         <Select
           mode="tags"
-          style={{ width: "100%" }}
-          onChange={handleSelectChange}
-          tokenSeparators={[",", " ", "，"]}
+          value={items}
+          style={{ width: '100%' }}
+          onChange={handleTagsChange}
+          loading={isFetching}
+          tokenSeparators={[' ']}
         >
-          {tagsSelections}
+          {items && items.map(tag => <Option key={tag}>{tag}</Option>)}
         </Select>
+      </Form.Item>
+      <Form.Item label="是否拥有" name="hasGot">
+        <Radio.Group>
+          <Radio value={true}>是</Radio>
+          <Radio value={false}>否</Radio>
+        </Radio.Group>
       </Form.Item>
       <Form.Item label="打分" name="star">
         <Rate />
@@ -149,11 +165,18 @@ const AddWork = ({ addWork }) => {
           提交
         </Button>
       </Form.Item>
-      <div>
-        <pre>{script}</pre>
-      </div>
     </Form>
   );
 };
 
-export default connect(null, { addWork })(AddWork);
+const mapStateToProps = state => {
+  const { tags } = state;
+  return { tags };
+};
+
+export default connect(mapStateToProps, {
+  fetchTags,
+  addTags,
+  addWork,
+  addAuthors,
+})(AddWork);

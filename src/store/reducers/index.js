@@ -1,10 +1,12 @@
-import { combineReducers } from "redux";
-import works from "./works";
-import todos from "./todos";
+import { combineReducers } from 'redux';
+import works from './works';
+import tags from './tags';
+import authors from './authors';
 
 const reducer = combineReducers({
   works,
-  todos
+  tags,
+  authors,
 });
 
 export default reducer;
