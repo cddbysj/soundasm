@@ -1,18 +1,18 @@
 // 所有的作品
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { UserOutlined, SmileOutlined } from '@ant-design/icons';
-import { List, Avatar, Tag, Typography, Result } from 'antd';
-import { fetchWorks } from 'store/actions';
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { List, Tag, Typography, Spin } from "antd";
+import { fetchWorks } from "store/actions";
 
-const { Text, Paragraph } = Typography;
+const { Paragraph } = Typography;
 
 // 占位图片
 const imagePlaceholder =
-  'https://os.alipayobjects.com/rmsportal/UXamdIxYSkXfoVo.jpg';
+  "https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png";
 
 const WorksPage = ({ works, fetchWorks }) => {
-  const { isFetching, error, items } = works;
+  const { isFetching, items } = works;
 
   useEffect(() => {
     fetchWorks();
@@ -20,7 +20,7 @@ const WorksPage = ({ works, fetchWorks }) => {
 
   return (
     <div>
-      {isFetching && <div>Fetching...</div>}
+      {isFetching && <Spin />}
       <List
         itemLayout="vertical"
         size="large"
@@ -29,7 +29,7 @@ const WorksPage = ({ works, fetchWorks }) => {
           onChange: page => {
             console.log(page);
           },
-          pageSize: 3,
+          pageSize: 3
         }}
         dataSource={items}
         footer={<div>一共 {items.length} 个作品</div>}
@@ -37,40 +37,39 @@ const WorksPage = ({ works, fetchWorks }) => {
           <List.Item
             key={item.title}
             extra={
-              item.imageSrc ? (
-                <img
-                  width={280}
-                  alt="logo"
-                  src={item.imageSrc || imagePlaceholder}
-                />
-              ) : (
-                <Result
-                  style={{ width: 280 }}
-                  icon={<SmileOutlined />}
-                  title="This work has no cover yet"
-                />
-              )
+              <img
+                width={280}
+                alt="logo"
+                src={item.imageSrc || imagePlaceholder}
+              />
             }
           >
             <List.Item.Meta
-              avatar={
-                item.avatar || <Avatar size="default" icon={<UserOutlined />} />
+              title={
+                <Link
+                  to={{
+                    pathname: "/work",
+                    hash: `#${item.title}`,
+                    state: item
+                  }}
+                >
+                  {item.title}
+                </Link>
               }
-              title={item.author.join(' & ')}
-              description={`${item.language} ${item.rating} ${
-                item.rj ? item.rj : ''
+              description={`${item.language}  ${item.rating}  ${
+                item.rj ? item.rj : ""
               }`}
             />
             <div>
-              <Text strong>
-                <a target="_blank" rel="noopener noreferrer" href={item.url}>
-                  {item.title}
-                </a>
-              </Text>
+              {item.author.map(author => (
+                <Tag className="tag" color="blue" key={author}>
+                  {author}
+                </Tag>
+              ))}
               <Paragraph>{item.description}</Paragraph>
               <div>
                 {item.tags.map(tag => (
-                  <Tag style={{ margin: 2 }} key={tag}>
+                  <Tag className="tag" key={tag}>
                     {tag}
                   </Tag>
                 ))}

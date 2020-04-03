@@ -4,28 +4,28 @@ import {
   FETCH_TAGS_FAIL,
   ADD_TAGS,
   ADD_TAGS_DONE,
-  ADD_TAGS_FAIL,
-} from 'store/actionTypes';
+  ADD_TAGS_FAIL
+} from "store/actionTypes";
 
 const tags = (
-  state = { isFetching: false, error: null, items: [] },
+  state = { isFetching: false, error: null, tagItems: {} },
   action
 ) => {
   const { type, payload = {} } = action;
-  const { isFetching, error, items, tags } = payload;
+  const { isFetching, error, tagItems, tags } = payload;
   switch (type) {
     case FETCH_TAGS:
       return { ...state, isFetching };
     case FETCH_TAGS_DONE:
-      return { ...state, isFetching, items };
+      return { ...state, isFetching, tagItems };
     case FETCH_TAGS_FAIL:
       return { ...state, isFetching, error };
     case ADD_TAGS:
       return { ...state, error };
     case ADD_TAGS_DONE:
-      return { ...state, items: [...tags, ...state.items], error };
+      return { ...state, tagItems: { ...state.tagItem, ...tags }, error };
     case ADD_TAGS_FAIL:
-      return { ...state, items: [], error };
+      return { ...state, error };
     default:
       return state;
   }

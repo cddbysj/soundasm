@@ -1,30 +1,31 @@
-import React from 'react';
-import { Switch, Route, Link } from 'react-router-dom';
-import { Layout, Menu, Button } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+// 布局模板组件
+import React from "react";
+import { Switch, Route, Link } from "react-router-dom";
+import { Layout, Menu } from "antd";
 import {
   GlobalOutlined,
   CustomerServiceOutlined,
   UserOutlined,
-  TagsOutlined,
-} from '@ant-design/icons';
-import * as ROUTES from 'myConstants/routes';
-import AddWork from 'pages/AddWork';
-import Work from 'components/Work';
-import Home from 'pages/Home';
-import WorksPage from 'pages/Works';
-import AuthorsPage from 'pages/Authors';
-import TagsPage from 'pages/Tags';
-import AddAuthor from 'pages/AddAuthor';
+  TagsOutlined
+} from "@ant-design/icons";
+import * as ROUTES from "myConstants/routes";
+import TopNav from "components/TopNav";
+import AddWork from "pages/AddWork";
+import Work from "components/Work";
+import Home from "pages/Home";
+import WorksPage from "pages/Works";
+import AuthorsPage from "pages/Authors";
+import TagsPage from "pages/Tags";
+import AddAuthor from "pages/AddAuthorProfile";
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Sider, Content } = Layout;
 
 const BasicLayout = () => {
   return (
     <Layout>
-      <Sider theme="light" style={{ minHeight: '100vh' }}>
+      <Sider theme="light" style={{ minHeight: "100vh" }}>
         <div>Soundgasm Logo</div>
-        <Menu mode="inline" defaultSelectedKeys={['works']}>
+        <Menu mode="inline" defaultSelectedKeys={["works"]}>
           <Menu.Item key="works">
             <Link to={ROUTES.WORKS_PAGE}>
               <CustomerServiceOutlined />
@@ -52,15 +53,10 @@ const BasicLayout = () => {
         </Menu>
       </Sider>
       <Layout>
-        <Header style={{ background: 'white' }}>
-          <Link to={ROUTES.ADD_WORK}>
-            <Button icon={<PlusOutlined />}>添加作品</Button>
-          </Link>
-          <Link to={ROUTES.ADD_AUTHOR}>
-            <Button icon={<PlusOutlined />}>添加艺术家</Button>
-          </Link>
+        <Header style={{ background: "white" }}>
+          <TopNav />
         </Header>
-        <Content style={{ padding: 16, background: 'white' }}>
+        <Content style={{ padding: 16, background: "white" }}>
           <Switch>
             <Route path="/" exact>
               <Home />
@@ -85,7 +81,6 @@ const BasicLayout = () => {
             </Route>
           </Switch>
         </Content>
-        <Footer>@Bill Studio</Footer>
       </Layout>
     </Layout>
   );

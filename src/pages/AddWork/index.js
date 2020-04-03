@@ -1,92 +1,188 @@
 // 添加一个作品
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { Form, Input, Radio, Rate, Button, Select } from 'antd';
-import { addWork, fetchTags, addTags, addAuthors } from 'store/actions';
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { useLocation } from "react-router-dom";
+import * as moment from "moment";
+import {
+  Form,
+  Input,
+  Radio,
+  Rate,
+  Button,
+  Select,
+  message,
+  DatePicker
+} from "antd";
+import {
+  checkWorkExists,
+  addWork,
+  updateWork,
+  fetchTags,
+  addTags,
+  fetchAuthors,
+  addAuthors
+} from "store/actions";
 
 const { TextArea } = Input;
 const { Option } = Select;
 
 const layout = {
   labelCol: { span: 6 },
-  wrapperCol: { span: 12 },
+  wrapperCol: { span: 12 }
 };
 
 const tailLayout = {
   wrapperCol: {
     offset: 6,
-    span: 6,
-  },
+    span: 6
+  }
 };
 
+const MOMENT_FORMAT = "YYYY-MM-DD hh:mm:ss";
+
 const languageSelections = [
-  'English',
-  'Japanese',
-  'Chinese',
-  'Korean',
-  'Spanish',
-  'French',
+  "English",
+  "Japanese",
+  "Chinese",
+  "Korean",
+  "Spanish",
+  "French"
 ].map(language => <Option key={language}>{language}</Option>);
 
-const authorsSelections = [].map(author => (
-  <Option key={author}>{author}</Option>
-));
+const AddWork = ({
+  tags,
+  fetchTags,
+  addTags,
+  checkWorkExists,
+  addWork,
+  updateWork,
+  authors,
+  fetchAuthors,
+  addAuthors
+}) => {
+  const [form] = Form.useForm();
+  const location = useLocation();
 
-const AddWork = ({ tags, fetchTags, addTags, addWork, addAuthors }) => {
+  const { tagItems } = tags;
+  const { authorItems } = authors;
+
+  // 是否编辑模式
+  const isEditMode = !!location.state;
+
   // 当前作品要添加的标签
-  const [currentTags, setCurrentTags] = useState([]);
-  const [currentAuthors, setCurrentAuthors] = useState([]);
+  const [currentTags, setCurrentTags] = useState(
+    isEditMode ? location.state.tags : []
+  );
+  // 当前作品要添加的作者
+  const [currentAuthors, setCurrentAuthors] = useState(
+    isEditMode ? location.state.author : []
+  );
 
-  const { isFetching, error, items } = tags;
-  const initialValues = {
-    title: '',
-    author: [],
-    rj: null,
-    url: null,
-    imageSrc: null,
-    Illustrator: null,
-    description: null,
-    tags: items,
-    rating: 'R18',
-    star: 4,
-    hasGot: true,
-    language: ['Japanese'],
-    script: null,
-  };
+  const initialValues = isEditMode
+    ? {
+        ...location.state,
+        editAt: moment(location.state.editAt, MOMENT_FORMAT)
+      }
+    : {
+        title: "",
+        author: [],
+        rj: null,
+        url: null,
+        imageSrc: null,
+        Illustrator: null,
+        description: null,
+        tags: [],
+        rating: "R18",
+        star: 4,
+        hasGot: true,
+        language: ["Japanese"],
+        script: null,
+        editAt: moment()
+      };
+
+  useEffect(() => {
+    fetchAuthors();
+  }, [fetchAuthors]);
 
   useEffect(() => {
     fetchTags();
   }, [fetchTags]);
 
-  const onFinish = values => {
-    console.log('提交的表格数据', values);
-    Promise.all([
-      addWork(values),
-      addTags(currentTags),
-      addAuthors(currentAuthors),
-    ]);
+  const onFinish = async work => {
+    console.log("提交的表格数据", work);
+
+    const workData = {
+      ...work,
+      editAt: work.editAt.format(MOMENT_FORMAT)
+    };
+
+    try {
+      if (isEditMode) {
+        const { id } = location.state;
+        await Promise.all([
+          updateWork({
+            ...workData,
+            id
+          }),
+          addTags(currentTags),
+          addAuthors(currentAuthors)
+        ]);
+        message.success("更新作品成功", 1);
+      } else {
+        const isWorkExists = await checkWorkExists(work);
+        if (isWorkExists) {
+          message.warn("该作品已存在", 2);
+          return;
+        }
+        await Promise.all([
+          addWork(workData),
+          addTags(currentTags),
+          addAuthors(currentAuthors)
+        ]);
+        message.success("添加作品成功", 1);
+      }
+      form.resetFields();
+    } catch (error) {
+      message.error("添加作品失败", 2);
+      console.log(error);
+    } finally {
+    }
   };
 
-  const handleTagsChange = value => {
-    const tags = value.map(v => v.trim()).filter(v => v);
-    setCurrentTags(tags);
+  const handleTagsChange = tags => {
+    console.log("tags:", tags);
+    form.setFieldsValue({ tags });
+    const formalizedTags = tags.map(tag => tag.trim());
+    setCurrentTags(formalizedTags);
   };
 
-  const handleAuthorsChange = value => {
-    const authors = value.map(v => v.trim()).filter(v => v);
-    setCurrentAuthors(authors);
+  const handleAuthorsChange = authors => {
+    console.log("authors:", authors);
+    form.setFieldsValue({ authors });
+    const formalizedTAuthors = authors.map(author => author.trim());
+    setCurrentAuthors(formalizedTAuthors);
+  };
+
+  const handleDateChange = (value, dateString) => {
+    console.log("selected value:", value);
+    console.log("formatted value:", dateString);
   };
 
   return (
-    <Form initialValues={initialValues} onFinish={onFinish} {...layout}>
+    <Form
+      initialValues={initialValues}
+      onFinish={onFinish}
+      form={form}
+      {...layout}
+    >
       <Form.Item
         label="标题"
         name="title"
         rules={[
           {
             required: true,
-            message: '请输入标题',
-          },
+            message: "请输入标题"
+          }
         ]}
       >
         <Input />
@@ -97,16 +193,19 @@ const AddWork = ({ tags, fetchTags, addTags, addWork, addAuthors }) => {
         rules={[
           {
             required: true,
-            message: '请输入作者',
-          },
+            message: "请输入作者"
+          }
         ]}
       >
         <Select
           mode="tags"
           onChange={handleAuthorsChange}
-          tokenSeparators={['/']}
+          tokenSeparators={["/", "&"]}
+          loading={authors.isFetching}
         >
-          {authorsSelections}
+          {Object.keys(authorItems).map(author => (
+            <Option key={author}>{author}</Option>
+          ))}
         </Select>
       </Form.Item>
       <Form.Item label="链接" name="url">
@@ -132,20 +231,21 @@ const AddWork = ({ tags, fetchTags, addTags, addWork, addAuthors }) => {
         <TextArea autoSize></TextArea>
       </Form.Item>
       <Form.Item label="语言" name="language">
-        <Select mode="tags" style={{ width: '100%' }}>
+        <Select mode="tags" style={{ width: "100%" }}>
           {languageSelections}
         </Select>
       </Form.Item>
       <Form.Item label="标签" name="tags">
         <Select
           mode="tags"
-          value={items}
-          style={{ width: '100%' }}
+          style={{ width: "100%" }}
           onChange={handleTagsChange}
-          loading={isFetching}
-          tokenSeparators={[' ']}
+          loading={tags.isFetching}
+          tokenSeparators={[" ", "/"]}
         >
-          {items && items.map(tag => <Option key={tag}>{tag}</Option>)}
+          {Object.keys(tagItems).map(tag => (
+            <Option key={tag}>{tag}</Option>
+          ))}
         </Select>
       </Form.Item>
       <Form.Item label="是否拥有" name="hasGot">
@@ -158,11 +258,14 @@ const AddWork = ({ tags, fetchTags, addTags, addWork, addAuthors }) => {
         <Rate />
       </Form.Item>
       <Form.Item label="台本" name="script">
-        <TextArea placeholder="台本" autoSize={{ minRows: 2, maxRows: 10 }} />
+        <TextArea placeholder="台本" autoSize={{ minRows: 2 }} />
+      </Form.Item>
+      <Form.Item label="时间" name="editAt">
+        <DatePicker showTime onChange={handleDateChange} />
       </Form.Item>
       <Form.Item {...tailLayout}>
         <Button type="primary" htmlType="submit" block>
-          提交
+          {isEditMode ? "更新作品" : "新增作品"}
         </Button>
       </Form.Item>
     </Form>
@@ -170,13 +273,16 @@ const AddWork = ({ tags, fetchTags, addTags, addWork, addAuthors }) => {
 };
 
 const mapStateToProps = state => {
-  const { tags } = state;
-  return { tags };
+  const { tags, authors } = state;
+  return { tags, authors };
 };
 
 export default connect(mapStateToProps, {
   fetchTags,
   addTags,
+  checkWorkExists,
   addWork,
-  addAuthors,
+  updateWork,
+  fetchAuthors,
+  addAuthors
 })(AddWork);

@@ -11,6 +11,10 @@
 - Firebase 数据库的数据结构如何设计？Firebase 和 Redux 都建议数据结构应当尽可能的扁平化，这样会使得查询性能更佳等等。
 - 如何将 Firebase 的用户认证和数据库较为优雅地与 Redux 结合使用。我希望达到的效果是：除了 Redux 本身与 React 绑定使用 Context API 外，不再使用 Context 或者高阶组件、渲染属性这些模式。Hooks 可以考虑。
 - 组件库的选择：antd 更易上手，但是 Marterial-UI 显然更加吸引我。
+- 数据结构从数组改为对象，避免在添加新项目时，数组结构需要去重等问题。
+- 规范路由配置。
+- 使用 Firebase Storage 来实现上传和下载图片、音频等。[上传文件示例](https://firebase.google.com/docs/storage/web/upload-files?authuser=0#full_example)
+- moment 时区问题。全局设置为 zh-CN，但是可能由于使用 VPN，时区有时候会切换到美国等地区。
 
 ## 使用 Material-UI 的网页布局参考
 
