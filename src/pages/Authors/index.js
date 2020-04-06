@@ -1,28 +1,31 @@
 // 所有作者
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { Spin, Row, Col, Button } from "antd";
-import { fetchAuthors, fetchAuthorProfile } from "store/actions";
-import AuthorProfile from "components/AuthorProfile";
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { Spin, Row, Col, Button, Skeleton, Avatar } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+import { fetchAuthors, fetchAuthorProfiles } from 'store/actions';
+import AuthorProfile from 'components/AuthorProfile';
 
 const AuthorsPage = ({
   authors,
   authorProfile,
   fetchAuthors,
-  fetchAuthorProfile
+  fetchAuthorProfiles,
 }) => {
   const { authorItems } = authors;
-  const { profile } = authorProfile;
+  const { profiles } = authorProfile;
 
-  const [currentProfile, setCurrentProfile] = useState("Latte ASMR");
+  const [currentAuthor, setCurrentAuthor] = useState('');
+
+  const profile = profiles && profiles[currentAuthor];
 
   useEffect(() => {
     fetchAuthors();
   }, [fetchAuthors]);
 
   useEffect(() => {
-    fetchAuthorProfile(currentProfile);
-  }, [currentProfile, fetchAuthorProfile]);
+    fetchAuthorProfiles();
+  }, [fetchAuthorProfiles]);
 
   return (
     <Row gutter={[48, 48]}>
@@ -31,7 +34,10 @@ const AuthorsPage = ({
         {profile ? (
           <AuthorProfile profile={profile} />
         ) : (
-          <div>这位艺术家还没有档案^_^</div>
+          <Skeleton avatar>
+            <Avatar icon={<UserOutlined />} />
+            <div>这位艺术家还没有档案^_^</div>
+          </Skeleton>
         )}
       </Col>
       <Col span={6}>
@@ -39,7 +45,7 @@ const AuthorsPage = ({
         {Object.keys(authorItems).map(author => (
           <Button
             key={author}
-            onClick={() => setCurrentProfile(author)}
+            onClick={() => setCurrentAuthor(author)}
             type="link"
             block
           >
@@ -56,6 +62,7 @@ const mapStateToProps = state => {
   return { authors, authorProfile };
 };
 
-export default connect(mapStateToProps, { fetchAuthors, fetchAuthorProfile })(
-  AuthorsPage
-);
+export default connect(mapStateToProps, {
+  fetchAuthors,
+  fetchAuthorProfiles,
+})(AuthorsPage);

@@ -1,31 +1,38 @@
 // 布局模板组件
-import React from "react";
-import { Switch, Route, Link } from "react-router-dom";
-import { Layout, Menu } from "antd";
+import React from 'react';
+import { Switch, Route, Link } from 'react-router-dom';
+import { Layout, Menu } from 'antd';
 import {
   GlobalOutlined,
   CustomerServiceOutlined,
   UserOutlined,
-  TagsOutlined
-} from "@ant-design/icons";
-import * as ROUTES from "myConstants/routes";
-import TopNav from "components/TopNav";
-import AddWork from "pages/AddWork";
-import Work from "components/Work";
-import Home from "pages/Home";
-import WorksPage from "pages/Works";
-import AuthorsPage from "pages/Authors";
-import TagsPage from "pages/Tags";
-import AddAuthor from "pages/AddAuthorProfile";
+  TagsOutlined,
+  HomeOutlined,
+} from '@ant-design/icons';
+import * as ROUTES from 'myConstants/routes';
+import TopNav from 'components/TopNav';
+import AddWork from 'pages/AddWork';
+import Work from 'components/Work';
+import Home from 'pages/Home';
+import WorksPage from 'pages/Works';
+import AuthorsPage from 'pages/Authors';
+import TagsPage from 'pages/Tags';
+import AddAuthor from 'pages/AddAuthorProfile';
 
 const { Header, Sider, Content } = Layout;
 
 const BasicLayout = () => {
   return (
     <Layout>
-      <Sider theme="light" style={{ minHeight: "100vh" }}>
+      <Sider theme="light" style={{ minHeight: '100vh' }}>
         <div>Soundgasm Logo</div>
-        <Menu mode="inline" defaultSelectedKeys={["works"]}>
+        <Menu mode="inline" defaultSelectedKeys={['works']}>
+          <Menu.Item key="home">
+            <Link to={ROUTES.HOME_PAGE}>
+              <HomeOutlined />
+              <span>主页</span>
+            </Link>
+          </Menu.Item>
           <Menu.Item key="works">
             <Link to={ROUTES.WORKS_PAGE}>
               <CustomerServiceOutlined />
@@ -53,12 +60,12 @@ const BasicLayout = () => {
         </Menu>
       </Sider>
       <Layout>
-        <Header style={{ background: "white" }}>
+        <Header style={{ background: 'white' }}>
           <TopNav />
         </Header>
-        <Content style={{ padding: 16, background: "white" }}>
+        <Content style={{ padding: 16, background: 'white' }}>
           <Switch>
-            <Route path="/" exact>
+            <Route path={ROUTES.HOME_PAGE} exact>
               <Home />
             </Route>
             <Route path={ROUTES.ADD_WORK}>
@@ -76,7 +83,7 @@ const BasicLayout = () => {
             <Route path={ROUTES.TAGS_PAGE}>
               <TagsPage />
             </Route>
-            <Route path="/work">
+            <Route path={ROUTES.WORK_PAGE}>
               <Work />
             </Route>
           </Switch>

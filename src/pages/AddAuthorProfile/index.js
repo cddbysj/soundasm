@@ -1,40 +1,46 @@
-import React from "react";
-import { Form, Input, Button, message, Upload } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-import { addAuthorProfile, addAuthors } from "store/actions";
-import { connect } from "react-redux";
-import { useLocation } from "react-router-dom";
+import React from 'react';
+import { Form, Input, Button, message, Upload } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+import { addAuthorProfile, addAuthors, uploadAvatar } from 'store/actions';
+import { connect } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 const { TextArea } = Input;
 
 const formLayout = {
   labelCol: {
-    span: 6
+    span: 6,
   },
   wrapperCol: {
-    span: 12
-  }
+    span: 12,
+  },
 };
 
 const tailLayout = {
   wrapperCol: {
     span: 12,
-    offset: 6
-  }
+    offset: 6,
+  },
 };
 
 const initialValues = {
   name: null,
-  avatar: null,
   bio: null,
   url: null,
   greetings: null,
   evaluation: null,
   coverFlow: [],
-  representativeWorks: []
+  representativeWorks: [],
 };
 
-const AddAuthorProfile = ({ addAuthorProfile, addAuthors }) => {
+const AddAuthorProfile = ({
+  addAuthorProfile,
+  addAuthors,
+  uploadAvatar,
+  authorProfile,
+}) => {
+  // 上传头像得到的地址
+  const { downloadURL } = authorProfile;
   const location = useLocation();
   const [form] = Form.useForm();
 
@@ -43,9 +49,22 @@ const AddAuthorProfile = ({ addAuthorProfile, addAuthors }) => {
   isEditMode && form.setFieldsValue(location.state);
 
   const onFinish = async profile => {
-    console.log("form data:", profile);
-    await Promise.all([addAuthorProfile(profile), addAuthors(profile.name)]);
-    message.success("添加作者成功", 1);
+    console.log('form data:', profile);
+    if (isEditMode && !downloadURL) {
+      message.warn('请等待图片上传完成', 1);
+      return;
+    }
+    // 提交到数据库的数据
+    const profileData = {
+      ...profile,
+      avatar: downloadURL ? downloadURL : null,
+    };
+    console.log('profileData', profileData);
+    await Promise.all([
+      addAuthorProfile(profileData),
+      addAuthors(profile.name),
+    ]);
+    message.success('添加作者成功', 1);
   };
 
   const onReset = () => {
@@ -55,19 +74,19 @@ const AddAuthorProfile = ({ addAuthorProfile, addAuthors }) => {
   const beforeUpload = () => {};
 
   const handleAvatarChange = info => {
-    if (info.file.status !== "uploading") {
+    if (info.file.status !== 'uploading') {
       console.log(info.file, info.fileList);
     }
-    if (info.file.status === "done") {
-      message.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
+    if (info.file.status === 'done') {
+      message.success(`${info.file.name} 上传成功`);
+    } else if (info.file.status === 'error') {
+      message.error(`${info.file.name} 上传失败.`);
     }
   };
 
   // 自定义上传行为
   // 使用 Firebase Storage 的接口
-  const uploadToStorage = ({
+  const uploadToStorage = async ({
     onProgress,
     onError,
     onSuccess,
@@ -76,10 +95,14 @@ const AddAuthorProfile = ({ addAuthorProfile, addAuthors }) => {
     file,
     withCredentials,
     action,
-    headers
+    headers,
   }) => {
-    console.log("file", file);
-    console.log("data", data);
+    console.log('file', file);
+    try {
+      await uploadAvatar({ file, onProgress, onError, onSuccess });
+    } catch (error) {
+      onError(error);
+    }
   };
 
   return (
@@ -93,18 +116,14 @@ const AddAuthorProfile = ({ addAuthorProfile, addAuthors }) => {
         <Form.Item
           name="name"
           label="名字"
-          rules={[{ required: true, message: "请输入名字" }]}
+          rules={[{ required: true, message: '请输入名字' }]}
         >
           <Input />
         </Form.Item>
-        <Form.Item name="avatar" label="头像">
-          <Input />
-        </Form.Item>
-        <Form.Item name="upload" label="上传">
+        <Form.Item label="上传" valuePropName="fileList">
           <Upload
-            name="avatar"
             headers={{
-              authorization: "authorization-text"
+              authorization: 'authorization-text',
             }}
             customRequest={uploadToStorage}
             beforeUpload={beforeUpload}
@@ -125,10 +144,10 @@ const AddAuthorProfile = ({ addAuthorProfile, addAuthors }) => {
           <TextArea autoSize={{ minRows: 2 }} />
         </Form.Item>
         <Form.Item {...tailLayout}>
-          <Button htmlType="submit" type="primary" style={{ width: "50%" }}>
-            {isEditMode ? "更新作者" : "添加作者"}
+          <Button htmlType="submit" type="primary" style={{ width: '50%' }}>
+            {isEditMode ? '更新作者' : '添加作者'}
           </Button>
-          <Button htmlType="reset" onClick={onReset} style={{ width: "50%" }}>
+          <Button htmlType="reset" onClick={onReset} style={{ width: '50%' }}>
             重置
           </Button>
         </Form.Item>
@@ -137,6 +156,13 @@ const AddAuthorProfile = ({ addAuthorProfile, addAuthors }) => {
   );
 };
 
-export default connect(null, { addAuthorProfile, addAuthors })(
-  AddAuthorProfile
-);
+const mapStateToProps = state => {
+  const { authorProfile } = state;
+  return { authorProfile };
+};
+
+export default connect(mapStateToProps, {
+  addAuthorProfile,
+  addAuthors,
+  uploadAvatar,
+})(AddAuthorProfile);

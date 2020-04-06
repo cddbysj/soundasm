@@ -1,14 +1,15 @@
 // 作品详情组件
 // 每个作品的数据结构如下
-import React from "react";
-import { useLocation, Link } from "react-router-dom";
-import { Typography, Rate, Tag, Row, Col } from "antd";
-import { EditOutlined } from "@ant-design/icons";
+import React from 'react';
+import { useLocation, Link } from 'react-router-dom';
+import { Typography, Rate, Tag, Row, Col } from 'antd';
+import { EditOutlined } from '@ant-design/icons';
+import { ADD_WORK } from 'myConstants/routes';
 
 const { Title, Paragraph } = Typography;
 
 const imagePlaceholder =
-  "https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png";
+  'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png';
 
 const Work = () => {
   const location = useLocation();
@@ -64,7 +65,7 @@ const Work = () => {
       </Row>
       <Row gutter={[32, 32]}>
         <Col span={4}>
-          <Link to={{ pathname: "/addWork", state: work }}>
+          <Link to={{ pathname: ADD_WORK, state: work }}>
             <EditOutlined /> 编辑
           </Link>
         </Col>
