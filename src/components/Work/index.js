@@ -1,15 +1,15 @@
 // 作品详情组件
 // 每个作品的数据结构如下
-import React from 'react';
-import { useLocation, Link } from 'react-router-dom';
-import { Typography, Rate, Tag, Row, Col } from 'antd';
-import { EditOutlined } from '@ant-design/icons';
-import { ADD_WORK } from 'myConstants/routes';
+import React from "react";
+import { useLocation, Link } from "react-router-dom";
+import { Typography, Rate, Tag, Row, Col } from "antd";
+import { EditOutlined } from "@ant-design/icons";
+import { ADD_WORK } from "myConstants/routes";
 
 const { Title, Paragraph } = Typography;
 
 const imagePlaceholder =
-  'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png';
+  "https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png";
 
 const Work = () => {
   const location = useLocation();
@@ -26,7 +26,7 @@ const Work = () => {
           <Title level={4}>{work.title}</Title>
           <Paragraph>
             作者：
-            {work.author.map(author => (
+            {work.author.map((author) => (
               <Tag className="tag" key={author}>
                 {author}
               </Tag>
@@ -44,14 +44,14 @@ const Work = () => {
           <Paragraph>编号：{work.rj}</Paragraph>
           <Paragraph>
             标签：
-            {work.tags.map(tag => (
-              <Tag key={tag} color="geekblue">
+            {work.tags.map((tag) => (
+              <Tag key={tag} color="geekblue" style={{ margin: 4 }}>
                 {tag}
               </Tag>
             ))}
           </Paragraph>
           <Paragraph>
-            评价： <Rate defaultValue={work.star} />
+            评分： <Rate defaultValue={work.star} />
           </Paragraph>
         </Col>
       </Row>

@@ -15,7 +15,7 @@ const TagsPage = ({ tags, fetchTags }) => {
     <div>
       <div>{isFetching && <Spin size="large" delay={500} />}</div>
       <div>
-        {Object.keys(tagItems).map(tag => (
+        {Object.keys(tagItems).map((tag) => (
           <Tag color="geekblue" style={{ margin: 6 }} key={tag}>
             {tag}
           </Tag>
@@ -25,7 +25,7 @@ const TagsPage = ({ tags, fetchTags }) => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const { tags } = state;
   return { tags };
 };

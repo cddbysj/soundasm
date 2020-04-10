@@ -15,6 +15,8 @@
 - 规范路由配置。
 - 使用 Firebase Storage 来实现上传和下载图片、音频等。[上传文件示例](https://firebase.google.com/docs/storage/web/upload-files?authuser=0#full_example)
 - moment 时区问题。全局设置为 zh-CN，但是可能由于使用 VPN，时区有时候会切换到美国等地区。
+- 实现音单功能，每个音单有一个主题，比如掏耳、舔耳、淫语等。
+- 实现基于作者、标签、语言等维度的过滤展示，考虑是在前端实现还是客户端实现？
 
 ## 使用 Material-UI 的网页布局参考
 

@@ -1,10 +1,10 @@
 // 所有作者
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { Spin, Row, Col, Button, Skeleton, Avatar } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
-import { fetchAuthors, fetchAuthorProfiles } from 'store/actions';
-import AuthorProfile from 'components/AuthorProfile';
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { Spin, Row, Col, Button, Skeleton, Avatar } from "antd";
+import { UserOutlined } from "@ant-design/icons";
+import { fetchAuthors, fetchAuthorProfiles } from "store/actions";
+import AuthorProfile from "components/AuthorProfile";
 
 const AuthorsPage = ({
   authors,
@@ -15,7 +15,9 @@ const AuthorsPage = ({
   const { authorItems } = authors;
   const { profiles } = authorProfile;
 
-  const [currentAuthor, setCurrentAuthor] = useState('');
+  const [currentAuthor, setCurrentAuthor] = useState("");
+
+  const authorList = Object.keys(authorItems);
 
   const profile = profiles && profiles[currentAuthor];
 
@@ -42,12 +44,11 @@ const AuthorsPage = ({
       </Col>
       <Col span={6}>
         {authors.isfetching && <Spin />}
-        {Object.keys(authorItems).map(author => (
+        {authorList.map((author) => (
           <Button
             key={author}
+            shape="round"
             onClick={() => setCurrentAuthor(author)}
-            type="link"
-            block
           >
             {author}
           </Button>
@@ -57,7 +58,7 @@ const AuthorsPage = ({
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const { authors, authorProfile } = state;
   return { authors, authorProfile };
 };

@@ -241,7 +241,7 @@ const AddWork = ({
           style={{ width: "100%" }}
           onChange={handleTagsChange}
           loading={tags.isFetching}
-          tokenSeparators={[" ", "/"]}
+          tokenSeparators={["/", '[',']']}
         >
           {Object.keys(tagItems).map(tag => (
             <Option key={tag}>{tag}</Option>

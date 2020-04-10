@@ -20,7 +20,7 @@ const authorProfile = (
   const { type, payload = {} } = action;
   const {
     error,
-    profile /* 作者档案 */,
+    profile /* 新增作者的档案 */,
     profiles,
     isFetching,
     downloadURL /* 头像的地址 */,
