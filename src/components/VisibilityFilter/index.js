@@ -1,8 +1,9 @@
 // 作品过滤器组件
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { Select } from "antd";
-import { setVisibilityFilter, fetchTags, fetchAuthors } from "store/actions";
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Select, Space } from 'antd';
+import { setVisibilityFilter, fetchTags, fetchAuthors } from 'store/actions';
+import { LANGUAGES, AGE_RATING } from 'myConstants';
 
 const { Option } = Select;
 
@@ -27,18 +28,27 @@ const VisibilityFilter = ({
   }, [fetchTags]);
 
   const onAuthorChange = (author) => {
-    console.log("on change", author);
+    console.log('on change', author);
     setVisibilityFilter({ author });
   };
 
   const onTagChange = (tag) => {
-    console.log("on change", tag);
+    console.log('on change', tag);
     setVisibilityFilter({ tag });
   };
 
+  const onLanguageChange = (language) => {
+    setVisibilityFilter({ language });
+  };
+
+  const onRatingChange = (rating) => {
+    setVisibilityFilter({ rating });
+  };
+
   return (
-    <div style={{ position: "fixed" }}>
+    <Space direction="vertical" size="large" style={{ position: 'fixed' }}>
       <Select
+        allowClear
         showSearch
         placeholder="作者"
         style={{ width: 200 }}
@@ -50,6 +60,7 @@ const VisibilityFilter = ({
         ))}
       </Select>
       <Select
+        allowClear
         showSearch
         placeholder="标签"
         style={{ width: 200 }}
@@ -60,7 +71,29 @@ const VisibilityFilter = ({
           <Option key={tag}>{tag}</Option>
         ))}
       </Select>
-    </div>
+      <Select
+        allowClear
+        showSearch
+        placeholder="语言"
+        style={{ width: 200 }}
+        onChange={onLanguageChange}
+      >
+        {LANGUAGES.map((tag) => (
+          <Option key={tag}>{tag}</Option>
+        ))}
+      </Select>
+      <Select
+        allowClear
+        showSearch
+        placeholder="年龄分级"
+        style={{ width: 200 }}
+        onChange={onRatingChange}
+      >
+        {AGE_RATING.map((tag) => (
+          <Option key={tag}>{tag}</Option>
+        ))}
+      </Select>
+    </Space>
   );
 };
 

@@ -1,14 +1,14 @@
 // 顶部操作导航组件
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from 'antd';
+import { Button, Space } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import * as ROUTES from 'myConstants/routes';
 import RjSearchBar from 'components/RjSearchBar';
 
 const TopNav = () => {
   return (
-    <>
+    <Space size="middle">
       <Link to={ROUTES.ADD_WORK}>
         <Button type="dashed" icon={<PlusOutlined />}>
           添加作品
@@ -20,7 +20,7 @@ const TopNav = () => {
         </Button>
       </Link>
       <RjSearchBar />
-    </>
+    </Space>
   );
 };
 
