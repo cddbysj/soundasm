@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Spin, Row, Col, Button, Skeleton, Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import { fetchAuthors, fetchAuthorProfiles } from "store/actions";
+import { fetchAuthorProfiles } from "store/authorProfile/authorProfile.acitons";
+import { fetchAuthors } from "store/authors/authors.actions";
 import AuthorProfile from "components/AuthorProfile";
 
 const AuthorsPage = ({
@@ -31,7 +32,7 @@ const AuthorsPage = ({
 
   return (
     <Row gutter={[48, 48]}>
-      <Col span={18}>
+      <Col span={16}>
         {authorProfile.isfetching && <Spin />}
         {profile ? (
           <AuthorProfile profile={profile} />
@@ -42,7 +43,7 @@ const AuthorsPage = ({
           </Skeleton>
         )}
       </Col>
-      <Col span={6}>
+      <Col span={8}>
         {authors.isfetching && <Spin />}
         {authorList.map((author) => (
           <Button

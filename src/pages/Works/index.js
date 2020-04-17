@@ -1,28 +1,38 @@
 // 所有的作品
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { List, Tag, Typography, Spin, Row, Col } from 'antd';
-import { fetchWorks } from 'store/actions';
-import VisibilityFilter from 'components/VisibilityFilter';
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { List, Tag, Typography, Spin, Row, Col } from "antd";
+import { fetchWorks } from "store/works/works.actions";
+import VisibilityFilter from "components/VisibilityFilter";
 
 const { Paragraph } = Typography;
 
 // 占位图片
 const imagePlaceholder =
-  'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png';
+  "https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png";
 
 const getVisibleWorks = (works, filter) => {
-  console.count('getVisibleWorks');
+  console.count("getVisibleWorks");
   const { items } = works;
-  const { author, tag, language, rating } = filter;
+  const { author, tag, language, rating, rj, title } = filter;
 
   const filteredItems = items.filter((item) => {
     const isMatchAuthor = !author || item.author.includes(author);
     const isMatchTag = !tag || item.tags.includes(tag);
     const isMatchLanguage = !language || item.language.includes(language);
     const isMatchRating = !rating || item.rating === rating;
-    return isMatchAuthor && isMatchTag && isMatchLanguage && isMatchRating;
+    const isMatchRj = !rj || (item.rj && item.rj.includes(rj));
+    const isMatchTitle =
+      !title || item.title.toLowerCase().includes(title.toLowerCase());
+    return (
+      isMatchAuthor &&
+      isMatchTag &&
+      isMatchLanguage &&
+      isMatchRating &&
+      isMatchRj &&
+      isMatchTitle
+    );
   });
 
   return { ...works, items: filteredItems };
@@ -44,10 +54,11 @@ const WorksPage = ({ works, fetchWorks }) => {
           size="large"
           style={{ maxWidth: 750 }}
           pagination={{
-            onChange: (page) => {
+            onChange: (page, pageSize) => {
               console.log(page);
+              console.log(pageSize);
             },
-            pageSize: 3,
+            defaultPageSize: 10,
           }}
           dataSource={items}
           footer={<div>一共 {items.length} 个作品</div>}
@@ -66,7 +77,7 @@ const WorksPage = ({ works, fetchWorks }) => {
                 title={
                   <Link
                     to={{
-                      pathname: '/work',
+                      pathname: "/work",
                       hash: `#${item.title}`,
                       state: item,
                     }}
@@ -75,7 +86,7 @@ const WorksPage = ({ works, fetchWorks }) => {
                   </Link>
                 }
                 description={`${item.language}  ${item.rating}  ${
-                  item.rj ? item.rj : ''
+                  item.rj ? item.rj : ""
                 }`}
               />
               <div>

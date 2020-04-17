@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Spin, Tag } from "antd";
-import { fetchTags } from "store/actions";
+import { fetchTags } from "store/tags/tags.actions";
 
 const TagsPage = ({ tags, fetchTags }) => {
   const { isFetching, tagItems } = tags;

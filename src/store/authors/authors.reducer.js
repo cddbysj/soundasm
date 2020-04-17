@@ -4,8 +4,8 @@ import {
   ADD_AUTHORS_DONE,
   FETCH_AUTHORS_DONE,
   FETCH_AUTHORS,
-  FETCH_AUTHORS_FAIL
-} from "../actionTypes";
+  FETCH_AUTHORS_FAIL,
+} from "store/authors/authors.actionTypes";
 
 const authors = (
   state = { isFetching: false, error: null, authorItems: {} },
@@ -26,7 +26,7 @@ const authors = (
       return {
         ...state,
         authorItems: { ...state.authorItems, ...newAuthors },
-        error
+        error,
       };
     case ADD_AUTHORS_FAIL:
       return { ...state, error };

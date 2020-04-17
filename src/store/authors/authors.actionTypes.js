@@ -1,0 +1,16 @@
+// 获取作者
+export const FETCH_AUTHORS = "FETCH_AUTHORS";
+export const FETCH_AUTHORS_FAIL = "FETCH_AUTHORS_FAIL";
+export const FETCH_AUTHORS_DONE = "FETCH_AUTHORS_DONE";
+
+export const FETCH_LANGUAGES = "FETCH_LANGUAGES";
+
+// 增加作者 单个或者多个
+export const ADD_AUTHORS = "ADD_AUTHORS";
+export const ADD_AUTHORS_FAIL = "ADD_AUTHORS_FAIL";
+export const ADD_AUTHORS_DONE = "ADD_AUTHORS_DONE";
+
+// 更新作者
+export const UPDATE_AUTHORS = "UPDATE_AUTHORS";
+export const UPDATE_AUTHORS_FAIL = "UPDATE_AUTHORS_FAIL";
+export const UPDATE_AUTHORS_DONE = "UPDATE_AUTHORS_DONE";

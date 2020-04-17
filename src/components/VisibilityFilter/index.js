@@ -1,11 +1,14 @@
 // 作品过滤器组件
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { Select, Space } from 'antd';
-import { setVisibilityFilter, fetchTags, fetchAuthors } from 'store/actions';
-import { LANGUAGES, AGE_RATING } from 'myConstants';
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { Select, Space, Input } from "antd";
+import { setVisibilityFilter } from "store/visibilityFilter/visibilityFilter.actions";
+import { fetchTags } from "store/tags/tags.actions";
+import { fetchAuthors } from "store/authors/authors.actions";
+import { LANGUAGES, AGE_RATING } from "myConstants";
 
 const { Option } = Select;
+const { Search } = Input;
 
 const VisibilityFilter = ({
   tags,
@@ -28,12 +31,12 @@ const VisibilityFilter = ({
   }, [fetchTags]);
 
   const onAuthorChange = (author) => {
-    console.log('on change', author);
+    console.log("on change", author);
     setVisibilityFilter({ author });
   };
 
   const onTagChange = (tag) => {
-    console.log('on change', tag);
+    console.log("on change", tag);
     setVisibilityFilter({ tag });
   };
 
@@ -45,8 +48,16 @@ const VisibilityFilter = ({
     setVisibilityFilter({ rating });
   };
 
+  const onRJSearch = (rj) => {
+    setVisibilityFilter({ rj });
+  };
+
+  const onTitleSearch = (title) => {
+    setVisibilityFilter({ title });
+  };
+
   return (
-    <Space direction="vertical" size="large" style={{ position: 'fixed' }}>
+    <Space direction="vertical" size="large" style={{ position: "fixed" }}>
       <Select
         allowClear
         showSearch
@@ -93,6 +104,13 @@ const VisibilityFilter = ({
           <Option key={tag}>{tag}</Option>
         ))}
       </Select>
+      <Search placeholder="RJ" onSearch={onRJSearch} enterButton allowClear />
+      <Search
+        placeholder="Title"
+        onSearch={onTitleSearch}
+        enterButton
+        allowClear
+      />
     </Space>
   );
 };

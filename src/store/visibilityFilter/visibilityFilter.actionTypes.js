@@ -1,0 +1,2 @@
+// 设置作品过滤器
+export const SET_VISIBILITY_FILTER = "SET_VISIBILITY_FILTER";

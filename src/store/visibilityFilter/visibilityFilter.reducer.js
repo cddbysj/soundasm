@@ -1,11 +1,11 @@
 // 针对作品的过滤器
-import { SET_VISIBILITY_FILTER } from 'store/actionTypes';
+import { SET_VISIBILITY_FILTER } from "store/visibilityFilter/visibilityFilter.actionTypes";
 
 const initialState = {
-  author: '',
-  rating: '',
-  language: '',
-  tag: '',
+  author: "",
+  rating: "",
+  language: "",
+  tag: "",
 };
 
 const visibilityFilter = (state = initialState, action) => {

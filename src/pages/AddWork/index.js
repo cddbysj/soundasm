@@ -1,8 +1,8 @@
 // 添加一个作品
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { useLocation } from 'react-router-dom';
-import * as moment from 'moment';
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { useLocation } from "react-router-dom";
+import * as moment from "moment";
 import {
   Form,
   Input,
@@ -12,17 +12,15 @@ import {
   Select,
   message,
   DatePicker,
-} from 'antd';
+} from "antd";
 import {
   checkWorkExists,
   addWork,
   updateWork,
-  fetchTags,
-  addTags,
-  fetchAuthors,
-  addAuthors,
-} from 'store/actions';
-import { LANGUAGES } from 'myConstants';
+} from "store/works/works.actions";
+import { fetchTags, addTags } from "store/tags/tags.actions";
+import { addAuthors, fetchAuthors } from "store/authors/authors.actions";
+import { LANGUAGES } from "myConstants";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -39,7 +37,7 @@ const tailLayout = {
   },
 };
 
-const MOMENT_FORMAT = 'YYYY-MM-DD hh:mm:ss';
+const MOMENT_FORMAT = "YYYY-MM-DD hh:mm:ss";
 
 const languageSelections = LANGUAGES.map((language) => (
   <Option key={language}>{language}</Option>
@@ -80,7 +78,7 @@ const AddWork = ({
         editAt: moment(location.state.editAt, MOMENT_FORMAT),
       }
     : {
-        title: '',
+        title: "",
         author: [],
         rj: null,
         url: null,
@@ -88,10 +86,10 @@ const AddWork = ({
         Illustrator: null,
         description: null,
         tags: [],
-        rating: 'R18',
+        rating: "R18",
         star: 4,
         hasGot: true,
-        language: ['Japanese'],
+        language: [],
         script: null,
         editAt: moment(),
       };
@@ -105,7 +103,7 @@ const AddWork = ({
   }, [fetchTags]);
 
   const onFinish = async (work) => {
-    console.log('提交的表格数据', work);
+    console.log("提交的表格数据", work);
 
     const workData = {
       ...work,
@@ -123,11 +121,12 @@ const AddWork = ({
           addTags(currentTags),
           addAuthors(currentAuthors),
         ]);
-        message.success('更新作品成功', 1);
+        message.success("更新作品成功", 1);
       } else {
         const isWorkExists = await checkWorkExists(work);
         if (isWorkExists) {
-          message.warn('该作品已存在', 2);
+          message.warn("该作品已存在", 2);
+          form.resetFields();
           return;
         }
         await Promise.all([
@@ -135,33 +134,33 @@ const AddWork = ({
           addTags(currentTags),
           addAuthors(currentAuthors),
         ]);
-        message.success('添加作品成功', 1);
+        message.success("添加作品成功", 1);
       }
       form.resetFields();
     } catch (error) {
-      message.error('添加作品失败', 2);
+      message.error("添加作品失败", 2);
       console.log(error);
     } finally {
     }
   };
 
   const handleTagsChange = (tags) => {
-    console.log('tags:', tags);
+    console.log("tags:", tags);
     form.setFieldsValue({ tags });
     const formalizedTags = tags.map((tag) => tag.trim());
     setCurrentTags(formalizedTags);
   };
 
   const handleAuthorsChange = (authors) => {
-    console.log('authors:', authors);
+    console.log("authors:", authors);
     form.setFieldsValue({ authors });
     const formalizedTAuthors = authors.map((author) => author.trim());
     setCurrentAuthors(formalizedTAuthors);
   };
 
   const handleDateChange = (value, dateString) => {
-    console.log('selected value:', value);
-    console.log('formatted value:', dateString);
+    console.log("selected value:", value);
+    console.log("formatted value:", dateString);
   };
 
   return (
@@ -177,7 +176,7 @@ const AddWork = ({
         rules={[
           {
             required: true,
-            message: '请输入标题',
+            message: "请输入标题",
           },
         ]}
       >
@@ -189,14 +188,14 @@ const AddWork = ({
         rules={[
           {
             required: true,
-            message: '请输入作者',
+            message: "请输入作者",
           },
         ]}
       >
         <Select
           mode="tags"
           onChange={handleAuthorsChange}
-          tokenSeparators={['/', '&']}
+          tokenSeparators={["/", "&"]}
           loading={authors.isFetching}
         >
           {Object.keys(authorItems).map((author) => (
@@ -226,18 +225,22 @@ const AddWork = ({
       <Form.Item label="描述" name="description">
         <TextArea autoSize></TextArea>
       </Form.Item>
-      <Form.Item label="语言" name="language">
-        <Select mode="tags" style={{ width: '100%' }}>
+      <Form.Item
+        label="语言"
+        name="language"
+        rules={[{ required: true, message: "请指定作品语言" }]}
+      >
+        <Select mode="tags" style={{ width: "100%" }}>
           {languageSelections}
         </Select>
       </Form.Item>
       <Form.Item label="标签" name="tags">
         <Select
           mode="tags"
-          style={{ width: '100%' }}
+          style={{ width: "100%" }}
           onChange={handleTagsChange}
           loading={tags.isFetching}
-          tokenSeparators={['/', '[', ']']}
+          tokenSeparators={["/", "\\", "、", "[", "]"]}
         >
           {Object.keys(tagItems).map((tag) => (
             <Option key={tag}>{tag}</Option>
@@ -261,7 +264,7 @@ const AddWork = ({
       </Form.Item>
       <Form.Item {...tailLayout}>
         <Button type="primary" htmlType="submit" block>
-          {isEditMode ? '更新作品' : '新增作品'}
+          {isEditMode ? "更新作品" : "新增作品"}
         </Button>
       </Form.Item>
     </Form>

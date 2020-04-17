@@ -5,7 +5,7 @@ import {
   ADD_TAGS,
   ADD_TAGS_DONE,
   ADD_TAGS_FAIL
-} from "store/actionTypes";
+} from "store/tags/tags.actionTypes";
 
 const tags = (
   state = { isFetching: false, error: null, tagItems: {} },

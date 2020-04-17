@@ -2,16 +2,13 @@ import {
   ADD_AUTHOR_PROFILE,
   ADD_AUTHOR_PROFILE_FAIL,
   ADD_AUTHOR_PROFILE_DONE,
-  FETCH_AUTHOR_PROFILE,
-  FETCH_AUTHOR_PROFILE_FAIL,
-  FETCH_AUTHOR_PROFILE_DONE,
   FETCH_AUTHOR_PROFILES,
   FETCH_AUTHOR_PROFILES_FAIL,
   FETCH_AUTHOR_PROFILES_DONE,
   UPLOAD_AVATAR,
   UPLOAD_AVATAR_FAIL,
   UPLOAD_AVATAR_DONE,
-} from 'store/actionTypes';
+} from "store/authorProfile/authorProfile.actionTypes";
 
 const authorProfile = (
   state = { isFetching: false, error: null, profile: null },
@@ -33,12 +30,6 @@ const authorProfile = (
       return { ...state, error };
     case ADD_AUTHOR_PROFILE_DONE:
       return { ...state, profile };
-    case FETCH_AUTHOR_PROFILE:
-      return { ...state, isFetching };
-    case FETCH_AUTHOR_PROFILE_FAIL:
-      return { ...state, isFetching, error };
-    case FETCH_AUTHOR_PROFILE_DONE:
-      return { ...state, isFetching, profile };
     case FETCH_AUTHOR_PROFILES:
       return { ...state, isFetching };
     case FETCH_AUTHOR_PROFILES_FAIL:

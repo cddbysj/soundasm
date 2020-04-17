@@ -8,13 +8,13 @@ import {
   UPDATE_WORK,
   UPDATE_WORK_FAIL,
   UPDATE_WORK_DONE,
-  CHECK_WORK_EXISTS
-} from "../actionTypes";
+  CHECK_WORK_EXISTS,
+} from "store/works/works.actionTypes";
 
 const initialState = {
   error: null,
   isFetching: false,
-  items: []
+  items: [],
 };
 
 const works = (state = initialState, action) => {
@@ -42,7 +42,9 @@ const works = (state = initialState, action) => {
     case UPDATE_WORK_DONE:
       return {
         ...state,
-        items: [...state.items.map(item => (item.id === work.id ? work : item))]
+        items: [
+          ...state.items.map((item) => (item.id === work.id ? work : item)),
+        ],
       };
     default:
       return state;

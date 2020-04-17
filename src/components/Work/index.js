@@ -5,6 +5,7 @@ import { useLocation, Link } from "react-router-dom";
 import { Typography, Rate, Tag, Row, Col } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { ADD_WORK } from "myConstants/routes";
+import Comments from "components/Comments";
 
 const { Title, Paragraph } = Typography;
 
@@ -23,11 +24,11 @@ const Work = () => {
           </div>
         </Col>
         <Col flex="450px">
-          <Title level={4}>{work.title}</Title>
+          <Title level={3}>{work.title}</Title>
           <Paragraph>
             作者：
             {work.author.map((author) => (
-              <Tag className="tag" key={author}>
+              <Tag className="tag" color="purple" key={author}>
                 {author}
               </Tag>
             ))}
@@ -35,10 +36,11 @@ const Work = () => {
           <Paragraph>分级：{work.rating}</Paragraph>
           <Paragraph>语言：{work.language}</Paragraph>
           <Paragraph>描述：{work.description}</Paragraph>
+          <Paragraph>拥有：{work.hasGot ? "是" : "否"}</Paragraph>
           <Paragraph>
             链接：
             <a href={work.url} target="_blank" rel="noopener noreferrer">
-              访问外链
+              {work.url && "访问外链"}
             </a>
           </Paragraph>
           <Paragraph>编号：{work.rj}</Paragraph>
@@ -56,11 +58,15 @@ const Work = () => {
         </Col>
       </Row>
       <Row gutter={[32, 32]}>
-        <Col span={16}>
-          <Title>台本</Title>
+        <Col span={14}>
+          <Title level={4}>台本</Title>
           <Paragraph>
             <pre>{work.script}</pre>
           </Paragraph>
+        </Col>
+        <Col span={10}>
+          <Title level={4}>评论</Title>
+          <Comments workId={work.id} />
         </Col>
       </Row>
       <Row gutter={[32, 32]}>

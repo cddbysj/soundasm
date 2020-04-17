@@ -6,16 +6,16 @@ const { Search } = Input;
 
 const DL_URL = "https://www.dlsite.com/maniax/work/=/product_id/";
 
-const validateRJ = rj => {
+const validateRJ = (rj) => {
   if (rj.length === 8) {
     const number = parseInt(rj.slice(2));
     if (rj.startsWith("RT")) return true;
-    return rj.startsWith("RJ") && number >= 80000 && number <= 400000;
+    return rj.startsWith("RJ") && number >= 1000 && number <= 400000;
   }
 
   if (rj.length === 6) {
     const number = parseInt(rj);
-    return number >= 80000 && number <= 400000;
+    return number >= 1000 && number <= 400000;
   }
 
   return false;
@@ -24,7 +24,7 @@ const validateRJ = rj => {
 const RjSearchBar = () => {
   const [tips, setTips] = useState("");
 
-  const handleRjSearch = rj => {
+  const handleRjSearch = (rj) => {
     console.log("rj", rj);
     const RJ = rj.toUpperCase();
     if (validateRJ(RJ)) {
