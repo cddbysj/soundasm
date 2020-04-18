@@ -2,6 +2,7 @@
   "name": "soundgasm",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://cddbysj.github.io/soundasm",
   "dependencies": {
     "@ant-design/icons": "^4.0.3",
     "@testing-library/jest-dom": "^4.2.4",
@@ -11,6 +12,7 @@
     "babel-plugin-import": "^1.13.0",
     "customize-cra": "^0.9.1",
     "firebase": "^7.11.0",
+    "gh-pages": "^2.2.0",
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.0",
@@ -24,6 +26,8 @@
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
