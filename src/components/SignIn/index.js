@@ -2,19 +2,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { Form, Input, Button, Checkbox, message } from "antd";
+import { Form, Input, Button, message } from "antd";
 import { signIn } from "store/auth/auth.actions";
 import { HOME_PAGE } from "myConstants/routes";
+import { MailOutlined, LockOutlined } from "@ant-design/icons";
 
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 8 },
-};
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 },
-};
-
-const SignIn = ({ signIn, currentUser }) => {
+const SignIn = ({ signIn, auth }) => {
   const history = useHistory();
 
   const onFinish = async ({ email, password }) => {
@@ -23,49 +16,52 @@ const SignIn = ({ signIn, currentUser }) => {
       message.success("欢迎您");
       history.push(HOME_PAGE);
     } catch (error) {
-      message.error("登录失败");
+      message.error("登录失败", error.message);
     }
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    message.error("登录失败", errorInfo);
   };
 
   return (
-    <Form
-      {...layout}
-      name="sign-in"
-      initialValues={{ remember: true }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      style={{ marginTop: 200 }}
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
     >
-      <Form.Item
-        label="Email"
-        name="email"
-        rules={[{ required: true, message: "Please input your email!" }]}
+      <Form
+        name="sign-in"
+        size="large"
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        style={{ width: 400 }}
       >
-        <Input />
-      </Form.Item>
+        <Form.Item
+          name="email"
+          rules={[{ required: true, message: "Please input your email" }]}
+        >
+          <Input prefix={<MailOutlined />} placeholder="Email" />
+        </Form.Item>
 
-      <Form.Item
-        label="Password"
-        name="password"
-        rules={[{ required: true, message: "Please input your password!" }]}
-      >
-        <Input.Password />
-      </Form.Item>
+        <Form.Item
+          name="password"
+          rules={[{ required: true, message: "Please input your password" }]}
+        >
+          <Input.Password prefix={<LockOutlined />} />
+        </Form.Item>
 
-      <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-        <Checkbox>Remember me</Checkbox>
-      </Form.Item>
-
-      <Form.Item {...tailLayout}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
+        <Form.Item>
+          <Button type="primary" htmlType="submit" loading={!auth} block>
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+    </div>
   );
 };
 

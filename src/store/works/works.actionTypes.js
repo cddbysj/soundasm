@@ -3,6 +3,14 @@ export const FETCH_WORKS = "FETCH_WORKS";
 export const FETCH_WORKS_DONE = "FETCH_WORKS_DONE";
 export const FETCH_WORKS_FAIL = "FETCH_WORKS_FAIL";
 
+// 获取更多作品
+export const FETCH_MORE_WORKS = "FETCH_MORE_WORKS";
+export const FETCH_MORE_WORKS_DONE = "FETCH_MORE_WORKS_DONE";
+export const FETCH_MORE_WORKS_FAIL = "FETCH_MORE_WORKS_FAIL";
+
+// 全部作品已加载
+export const ALL_WORKS_LOADED = "ALL_WORKS_LOADED";
+
 // 校验作品是否已存在
 export const CHECK_WORK_EXISTS = "CHECK_WORK_EXISTS";
 

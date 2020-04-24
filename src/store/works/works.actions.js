@@ -48,10 +48,12 @@ export const fetchWorks = () => async (dispatch) => {
     },
   });
 
-  const items = [];
   try {
     const querySnapshot = await worksRef.orderBy("editAt", "desc").get();
-    querySnapshot.forEach((doc) => items.push({ ...doc.data(), id: doc.id }));
+    const items = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
     dispatch({
       type: FETCH_WORKS_DONE,
       payload: {
@@ -71,36 +73,38 @@ export const fetchWorks = () => async (dispatch) => {
 export const addWork = (work) => async (dispatch) => {
   dispatch({
     type: ADD_WORK,
-    payload: { error: null },
+    payload: { error: null, isOperating: true },
   });
   try {
-    await worksRef.add(work);
+    const doc = worksRef.doc();
+    const workData = { ...work, id: doc.id };
+    await doc.set(workData);
     dispatch({
       type: ADD_WORK_DONE,
-      payload: { work },
+      payload: { work: workData, isOperating: false },
     });
   } catch (error) {
     dispatch({
       type: ADD_WORK_FAIL,
-      payload: { error },
+      payload: { isOperating: false, error },
     });
   }
 };
 export const updateWork = (work) => async (dispatch) => {
   dispatch({
     type: UPDATE_WORK,
-    payload: { error: null },
+    payload: { error: null, isOperating: true },
   });
   try {
     await worksRef.doc(work.id).update(work);
     dispatch({
       type: UPDATE_WORK_DONE,
-      payload: { work },
+      payload: { work, isOperating: false },
     });
   } catch (error) {
     dispatch({
       type: UPDATE_WORK_FAIL,
-      payload: { error },
+      payload: { error, isOperating: false },
     });
   }
 };

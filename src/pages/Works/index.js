@@ -1,112 +1,56 @@
 // 所有的作品
-import React, { useEffect } from "react";
+import React from "react";
+import { Spin, Row, Col } from "antd";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { List, Tag, Typography, Spin, Row, Col } from "antd";
-import { fetchWorks } from "store/works/works.actions";
 import VisibilityFilter from "components/VisibilityFilter";
-
-const { Paragraph } = Typography;
-
-// 占位图片
-const imagePlaceholder =
-  "https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png";
+import WorkList from "components/WorkList";
 
 const getVisibleWorks = (works, filter) => {
   console.count("getVisibleWorks");
   const { items } = works;
-  const { author, tag, language, rating, rj, title } = filter;
+  const {
+    author,
+    tag,
+    language,
+    rating,
+    rj,
+    title,
+    onlyShowWorksWithScript,
+  } = filter;
 
   const filteredItems = items.filter((item) => {
     const isMatchAuthor = !author || item.author.includes(author);
-    const isMatchTag = !tag || item.tags.includes(tag);
+    const isMatchTag =
+      !tag ||
+      item.tags.map((tag) => tag.toLowerCase()).includes(tag.toLowerCase());
     const isMatchLanguage = !language || item.language.includes(language);
     const isMatchRating = !rating || item.rating === rating;
     const isMatchRj = !rj || (item.rj && item.rj.includes(rj));
     const isMatchTitle =
       !title || item.title.toLowerCase().includes(title.toLowerCase());
+    const isMatchHasScript = onlyShowWorksWithScript ? item.script : true;
     return (
       isMatchAuthor &&
       isMatchTag &&
       isMatchLanguage &&
       isMatchRating &&
       isMatchRj &&
-      isMatchTitle
+      isMatchTitle &&
+      isMatchHasScript
     );
   });
 
   return { ...works, items: filteredItems };
 };
 
-const WorksPage = ({ works, fetchWorks }) => {
+const WorksPage = ({ works }) => {
   const { isFetching, items } = works;
-
-  useEffect(() => {
-    fetchWorks();
-  }, [fetchWorks]);
 
   return (
     <Row gutter={[32, 32]}>
       <Col span={18}>
         {isFetching && <Spin delay={1000} />}
-        <List
-          itemLayout="vertical"
-          size="large"
-          style={{ maxWidth: 750 }}
-          pagination={{
-            onChange: (page, pageSize) => {
-              console.log(page);
-              console.log(pageSize);
-            },
-            defaultPageSize: 10,
-          }}
-          dataSource={items}
-          footer={<div>一共 {items.length} 个作品</div>}
-          renderItem={(item) => (
-            <List.Item
-              key={item.title}
-              extra={
-                <img
-                  width={280}
-                  alt="logo"
-                  src={item.imageSrc || imagePlaceholder}
-                />
-              }
-            >
-              <List.Item.Meta
-                title={
-                  <Link
-                    to={{
-                      pathname: "/work",
-                      hash: `#${item.title}`,
-                      state: item,
-                    }}
-                  >
-                    {item.title}
-                  </Link>
-                }
-                description={`${item.language}  ${item.rating}  ${
-                  item.rj ? item.rj : ""
-                }`}
-              />
-              <div>
-                {item.author.map((author) => (
-                  <Tag className="tag" color="blue" key={author}>
-                    {author}
-                  </Tag>
-                ))}
-                <Paragraph>{item.description}</Paragraph>
-                <div>
-                  {item.tags.map((tag) => (
-                    <Tag className="tag" key={tag}>
-                      {tag}
-                    </Tag>
-                  ))}
-                </div>
-              </div>
-            </List.Item>
-          )}
-        />
+        <WorkList items={items} />
       </Col>
       <Col span={6}>
         <VisibilityFilter />
@@ -117,7 +61,10 @@ const WorksPage = ({ works, fetchWorks }) => {
 
 const mapStateToProps = (state) => {
   const { works, visibilityFilter } = state;
-  return { works: getVisibleWorks(works, visibilityFilter) };
+  return {
+    works: getVisibleWorks(works, visibilityFilter),
+    visibilityFilter,
+  };
 };
 
-export default connect(mapStateToProps, { fetchWorks })(WorksPage);
+export default connect(mapStateToProps)(WorksPage);

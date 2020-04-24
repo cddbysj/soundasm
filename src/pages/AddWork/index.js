@@ -1,5 +1,5 @@
 // 添加一个作品
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { useLocation } from "react-router-dom";
 import * as moment from "moment";
@@ -18,8 +18,8 @@ import {
   addWork,
   updateWork,
 } from "store/works/works.actions";
-import { fetchTags, addTags } from "store/tags/tags.actions";
-import { addAuthors, fetchAuthors } from "store/authors/authors.actions";
+import { addTags } from "store/tags/tags.actions";
+import { addAuthors } from "store/authors/authors.actions";
 import { LANGUAGES } from "myConstants";
 
 const { TextArea } = Input;
@@ -44,19 +44,19 @@ const languageSelections = LANGUAGES.map((language) => (
 ));
 
 const AddWork = ({
+  works,
   tags,
-  fetchTags,
   addTags,
   checkWorkExists,
   addWork,
   updateWork,
   authors,
-  fetchAuthors,
   addAuthors,
 }) => {
   const [form] = Form.useForm();
   const location = useLocation();
 
+  const { isOperating } = works;
   const { tagItems } = tags;
   const { authorItems } = authors;
 
@@ -93,14 +93,6 @@ const AddWork = ({
         script: null,
         editAt: moment(),
       };
-
-  useEffect(() => {
-    fetchAuthors();
-  }, [fetchAuthors]);
-
-  useEffect(() => {
-    fetchTags();
-  }, [fetchTags]);
 
   const onFinish = async (work) => {
     console.log("提交的表格数据", work);
@@ -147,7 +139,7 @@ const AddWork = ({
   const handleTagsChange = (tags) => {
     console.log("tags:", tags);
     form.setFieldsValue({ tags });
-    const formalizedTags = tags.map((tag) => tag.trim());
+    const formalizedTags = tags.map((tag) => tag.trim().toLowerCase());
     setCurrentTags(formalizedTags);
   };
 
@@ -158,9 +150,10 @@ const AddWork = ({
     setCurrentAuthors(formalizedTAuthors);
   };
 
-  const handleDateChange = (value, dateString) => {
-    console.log("selected value:", value);
+  const handleDateChange = (editAt, dateString) => {
+    console.log("selected value:", editAt);
     console.log("formatted value:", dateString);
+    form.setFieldsValue({ editAt });
   };
 
   return (
@@ -263,7 +256,7 @@ const AddWork = ({
         <DatePicker showTime onChange={handleDateChange} />
       </Form.Item>
       <Form.Item {...tailLayout}>
-        <Button type="primary" htmlType="submit" block>
+        <Button type="primary" htmlType="submit" loading={isOperating} block>
           {isEditMode ? "更新作品" : "新增作品"}
         </Button>
       </Form.Item>
@@ -272,16 +265,14 @@ const AddWork = ({
 };
 
 const mapStateToProps = (state) => {
-  const { tags, authors } = state;
-  return { tags, authors };
+  const { tags, authors, works } = state;
+  return { tags, authors, works };
 };
 
 export default connect(mapStateToProps, {
-  fetchTags,
   addTags,
   checkWorkExists,
   addWork,
   updateWork,
-  fetchAuthors,
   addAuthors,
 })(AddWork);

@@ -2,10 +2,13 @@
 import { SET_VISIBILITY_FILTER } from "store/visibilityFilter/visibilityFilter.actionTypes";
 
 const initialState = {
-  author: "",
-  rating: "",
-  language: "",
-  tag: "",
+  author: null,
+  rating: null,
+  language: null,
+  tag: null,
+  rj: null,
+  title: null,
+  onlyShowWorksWithScript: false,
 };
 
 const visibilityFilter = (state = initialState, action) => {

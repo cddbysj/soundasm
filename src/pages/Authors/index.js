@@ -1,34 +1,24 @@
 // 所有作者
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { Spin, Row, Col, Button, Skeleton, Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import { fetchAuthorProfiles } from "store/authorProfile/authorProfile.acitons";
-import { fetchAuthors } from "store/authors/authors.actions";
 import AuthorProfile from "components/AuthorProfile";
 
-const AuthorsPage = ({
-  authors,
-  authorProfile,
-  fetchAuthors,
-  fetchAuthorProfiles,
-}) => {
+const AuthorsPage = ({ authors, authorProfile }) => {
+  const history = useHistory();
+
   const { authorItems } = authors;
   const { profiles } = authorProfile;
 
-  const [currentAuthor, setCurrentAuthor] = useState("");
+  const [currentAuthor, setCurrentAuthor] = useState(
+    (history.location.state && history.location.state.author) || ""
+  );
 
   const authorList = Object.keys(authorItems);
 
   const profile = profiles && profiles[currentAuthor];
-
-  useEffect(() => {
-    fetchAuthors();
-  }, [fetchAuthors]);
-
-  useEffect(() => {
-    fetchAuthorProfiles();
-  }, [fetchAuthorProfiles]);
 
   return (
     <Row gutter={[48, 48]}>
@@ -64,7 +54,4 @@ const mapStateToProps = (state) => {
   return { authors, authorProfile };
 };
 
-export default connect(mapStateToProps, {
-  fetchAuthors,
-  fetchAuthorProfiles,
-})(AuthorsPage);
+export default connect(mapStateToProps)(AuthorsPage);

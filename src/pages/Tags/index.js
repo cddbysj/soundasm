@@ -1,15 +1,10 @@
 // 所有作品的标签汇总
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { Spin, Tag } from "antd";
-import { fetchTags } from "store/tags/tags.actions";
 
 const TagsPage = ({ tags, fetchTags }) => {
   const { isFetching, tagItems } = tags;
-
-  useEffect(() => {
-    fetchTags();
-  }, [fetchTags]);
 
   return (
     <div>
@@ -30,4 +25,4 @@ const mapStateToProps = (state) => {
   return { tags };
 };
 
-export default connect(mapStateToProps, { fetchTags })(TagsPage);
+export default connect(mapStateToProps)(TagsPage);

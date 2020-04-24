@@ -42,6 +42,10 @@ const FaqPage = () => {
           的脚本都保存在这个网站上。使用音频的名字加上 "site:pastebin" 在 Google
           上搜索，就可能获得某个音频的脚本。
         </Paragraph>
+        <Paragraph>
+          <a href="https://www.tryquinn.com/">quinn</a> Snap
+          创始人的妹妹创建一个色情音频网站。
+        </Paragraph>
         <Title level={4}>国内资源网站</Title>
         <Paragraph>
           <a href="https://18asmr.org/">18ASMR</a>{" "}
@@ -75,6 +79,16 @@ const FaqPage = () => {
           </a>
         </Paragraph>
         <Title level={4}>步非烟小小的菜单 作品目录</Title>
+        <Paragraph>空缺，已找到目录，但是懒得整理了。</Paragraph>
+        <Title level={4}>Gone Wild Audio 脚本作者</Title>
+        <Paragraph>
+          <a href="https://pastebin.com/u/Zerahmot">Zerahmot's Pastebin</a>
+        </Paragraph>
+        <Paragraph>
+          <a href="https://pastebin.com/u/RamblingKnight">
+            RamblingKnight's Pastebin
+          </a>
+        </Paragraph>
       </Col>
     </Row>
   );

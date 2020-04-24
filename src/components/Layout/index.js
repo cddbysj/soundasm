@@ -25,18 +25,22 @@ import SignOut from "components/SignOut";
 
 const { Header, Sider, Content } = Layout;
 
-const BasicLayout = ({ auth: { currentUser } }) => {
+const BasicLayout = ({ auth: { currentUser }, works, fetchWorks }) => {
   return currentUser ? (
     <Layout>
       <Sider theme="light" style={{ minHeight: "100vh" }}>
         <div
           style={{
-            font: "2em 'Segoe Script'",
-            textAlign: "center",
-            margin: "24px 0",
+            display: "flex",
+            flexDirection: "column",
+            font: "2em fantasy",
+            letterSpacing: 4,
+            margin: 8,
+            padding: "0 16px",
           }}
         >
-          Soundgasm
+          <span>Sound</span>
+          <span>Asmr</span>
         </div>
         <Menu mode="inline" defaultSelectedKeys={["home"]}>
           <Menu.Item key="home">
@@ -120,8 +124,9 @@ const BasicLayout = ({ auth: { currentUser } }) => {
 };
 
 const mapStateToProps = (state) => {
+  const { auth } = state;
   return {
-    auth: state.auth,
+    auth,
   };
 };
 

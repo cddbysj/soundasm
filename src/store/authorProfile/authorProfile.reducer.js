@@ -11,7 +11,7 @@ import {
 } from "store/authorProfile/authorProfile.actionTypes";
 
 const authorProfile = (
-  state = { isFetching: false, error: null, profile: null },
+  state = { isFetching: false, error: null, profile: null, profiles: null },
   action
 ) => {
   const { type, payload = {} } = action;
@@ -25,11 +25,14 @@ const authorProfile = (
   } = payload;
   switch (type) {
     case ADD_AUTHOR_PROFILE:
-      return state;
+      return { ...state };
     case ADD_AUTHOR_PROFILE_FAIL:
       return { ...state, error };
     case ADD_AUTHOR_PROFILE_DONE:
-      return { ...state, profile };
+      return {
+        ...state,
+        profiles: { ...state.profiles, [profile.name]: profile },
+      };
     case FETCH_AUTHOR_PROFILES:
       return { ...state, isFetching };
     case FETCH_AUTHOR_PROFILES_FAIL:

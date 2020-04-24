@@ -28,3 +28,7 @@
 - [All About React Router 4 - CSS Tricks](https://css-tricks.com/react-router-4/)
 - [关于 React Router 4 的一切](https://github.com/xitu/gold-miner/blob/master/TODO/all-about-react-router-4.md)
 - [[译]基于 React Router 4 的可复用 Layout 组件](https://segmentfault.com/a/1190000008976511)
+
+## 吐槽
+
+- Firebase cloud firestore 要实现一般的数据库分页，真的是费力，可能还费钱。不支持通常的数字游标，而要用文档作为游标；另外请求数据集合的时候，没法通过一次读取拿到集合下文档的总数，也就是说，为了拿到一个集合下文档的总数，你得先读取全部文档。严重怀疑这是为了业绩而故意设计成这样。毕竟 Firebase cloud firestore 是按照数据库的读写次数计费。

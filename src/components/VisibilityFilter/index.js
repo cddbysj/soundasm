@@ -1,34 +1,18 @@
 // 作品过滤器组件
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
-import { Select, Space, Input } from "antd";
+import { Select, Space, Input, Button, Radio } from "antd";
 import { setVisibilityFilter } from "store/visibilityFilter/visibilityFilter.actions";
-import { fetchTags } from "store/tags/tags.actions";
-import { fetchAuthors } from "store/authors/authors.actions";
 import { LANGUAGES, AGE_RATING } from "myConstants";
 
 const { Option } = Select;
 const { Search } = Input;
 
-const VisibilityFilter = ({
-  tags,
-  authors,
-  setVisibilityFilter,
-  fetchAuthors,
-  fetchTags,
-}) => {
+const VisibilityFilter = ({ tags, authors, setVisibilityFilter }) => {
   const { authorItems } = authors;
   const { tagItems } = tags;
   const authorList = Object.keys(authorItems);
   const tagList = Object.keys(tagItems);
-
-  useEffect(() => {
-    fetchAuthors();
-  }, [fetchAuthors]);
-
-  useEffect(() => {
-    fetchTags();
-  }, [fetchTags]);
 
   const onAuthorChange = (author) => {
     console.log("on change", author);
@@ -54,6 +38,22 @@ const VisibilityFilter = ({
 
   const onTitleSearch = (title) => {
     setVisibilityFilter({ title });
+  };
+
+  const onToggleScript = (e) => {
+    setVisibilityFilter({ onlyShowWorksWithScript: e.target.value });
+  };
+
+  const onClearFilter = () => {
+    setVisibilityFilter({
+      author: null,
+      tag: null,
+      language: null,
+      rating: null,
+      rj: null,
+      title: null,
+      onlyShowWorksWithScript: false,
+    });
   };
 
   return (
@@ -104,6 +104,10 @@ const VisibilityFilter = ({
           <Option key={tag}>{tag}</Option>
         ))}
       </Select>
+      <Radio.Group onChange={onToggleScript} defaultValue={false}>
+        <Radio value={true}>有脚本</Radio>
+        <Radio value={false}>全部</Radio>
+      </Radio.Group>
       <Search placeholder="RJ" onSearch={onRJSearch} enterButton allowClear />
       <Search
         placeholder="Title"
@@ -111,6 +115,7 @@ const VisibilityFilter = ({
         enterButton
         allowClear
       />
+      <Button onClick={onClearFilter}>清空过滤</Button>
     </Space>
   );
 };
@@ -125,6 +130,4 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   setVisibilityFilter,
-  fetchTags,
-  fetchAuthors,
 })(VisibilityFilter);
