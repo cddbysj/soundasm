@@ -6,6 +6,7 @@ import { Typography, Rate, Tag, Row, Col } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { ADD_WORK } from "myConstants/routes";
 import Comments from "components/Comments";
+import styles from "./index.module.css";
 
 const { Title, Paragraph } = Typography;
 
@@ -20,7 +21,11 @@ const Work = () => {
       <Row gutter={[32, 32]} align="middle">
         <Col>
           <div>
-            <img src={work.imageSrc || imagePlaceholder} alt={work.title} />
+            <img
+              className={styles.cover}
+              src={work.imageSrc || imagePlaceholder}
+              alt={work.title}
+            />
           </div>
         </Col>
         <Col flex="450px">
@@ -28,7 +33,7 @@ const Work = () => {
           <Paragraph>
             作者：
             {work.author.map((author) => (
-              <Tag className="tag" color="purple" key={author}>
+              <Tag color="purple" key={author} className={styles.tag}>
                 {author}
               </Tag>
             ))}
@@ -47,7 +52,7 @@ const Work = () => {
           <Paragraph>
             标签：
             {work.tags.map((tag) => (
-              <Tag key={tag} color="geekblue" style={{ margin: 4 }}>
+              <Tag key={tag} color="geekblue" className={styles.tag}>
                 {tag}
               </Tag>
             ))}
@@ -61,12 +66,24 @@ const Work = () => {
         <Col span={14}>
           <Title level={4}>台本</Title>
           <Paragraph>
-            <pre>{work.script}</pre>
+            <pre className={styles.script}>{work.script}</pre>
           </Paragraph>
         </Col>
         <Col span={10}>
-          <Title level={4}>评论</Title>
-          <Comments workId={work.id} />
+          <Row gutter={[80, 80]}>
+            <Col span={24}>
+              <Title level={4}>信息</Title>
+              <Paragraph>
+                <pre className={styles.info}>{work.info}</pre>
+              </Paragraph>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
+              <Title level={4}>评论</Title>
+              <Comments workId={work.id} />
+            </Col>
+          </Row>
         </Col>
       </Row>
       <Row gutter={[32, 32]}>

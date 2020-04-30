@@ -7,16 +7,6 @@ pre {
     Arial;
 }
 
-pre {
-  font-family: Avenir, -apple-system, BlinkMacSystemFont, "Comic Sans MS",
-    "Segoe Script", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji",
-    sans-serif, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
-    "Microsoft YaHei", "微软雅黑", Arial;
-  white-space: pre-wrap;
-  font-size: large;
-}
-
 .tag {
   margin: 6px;
 }

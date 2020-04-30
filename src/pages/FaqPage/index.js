@@ -46,6 +46,20 @@ const FaqPage = () => {
           <a href="https://www.tryquinn.com/">quinn</a> Snap
           创始人的妹妹创建一个色情音频网站。
         </Paragraph>
+        <Paragraph>
+          <a href="https://audiomack.com/">Audio Mack</a>
+          Audiomack
+          是国外一款分享英文电子音乐的音乐网站，其针对的是英文歌曲而并非是国内的，也算是小众类型。
+          但是 Audiomack 拥有无限制上传分享功能，也为 Audiomack
+          添加了无限的可能。没错，只要是你拥有的音频资源，均可以无限制分享上去，而且
+          Audiomack 也并没有诸如国内的严苛审核以及版权限制，因此 Audiomack
+          的自由也使得其内涵十足。 而当 Audiomack 被中国人发现，在 Audiomack
+          这个还没有被和谐的平台下，国人赋予了它新的生命
+          没错，周杰伦的所有歌曲，均可以在里面搜索到，并且在线收听和下载，一些国内版权歌曲，同样也被中国网友给上传进去。
+          开车是国人的精神，因此什么 18 禁的音声、步非烟、ASMR
+          等等开车音频资源，只要有人上传过，你均可以在里面搜索到，并且无限制收听。
+          当然，怎么找这些资源，是需要一些想象力和关键字储备的，并不困难。
+        </Paragraph>
         <Title level={4}>国内资源网站</Title>
         <Paragraph>
           <a href="https://18asmr.org/">18ASMR</a>{" "}
@@ -57,12 +71,19 @@ const FaqPage = () => {
           这个是做的比较用心的一个网站，收费上非常克制。签到、自己上传资源可以获得积分，积分可以用来获取资源。
         </Paragraph>
         <Paragraph>
+          <a href="https://www.macgn.com/">萌站</a> 一个 ACG
+          交流分享平台，包括游戏、漫画、动画、音声、电影、轻小说等。签到可以获得积分，积分可以用来获取资源。
+        </Paragraph>
+        <Paragraph>
           <a href="https://www.missahri.com/">missahri</a>{" "}
           这个网站一般，仅作备用。一是因为大部分资源是国内主播卖肉的所谓福利视频，其质量其实很低；二是这个网站大部分资源都是收费的，其实很多资源在其他地方都可以免费获取。
         </Paragraph>
         <Paragraph>
           <a href="https://www.okfree.men/">自由男人网络硬盘</a>{" "}
           国内大部分音声资源在这个网盘都可以找到，比如步非烟工作室的大部分作品。
+        </Paragraph>
+        <Paragraph>
+          <a href="http://www.xrmoo.com/">闲人吧</a> 老司机教你如何开车。
         </Paragraph>
         <Title level={4}>野外资源常见的密码集锦</Title>
         <Paragraph copyable>bdtrysb</Paragraph>

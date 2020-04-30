@@ -76,6 +76,7 @@ const AddWork = ({
     ? {
         ...location.state,
         editAt: moment(location.state.editAt, MOMENT_FORMAT),
+        info: location.state.info ? location.state.info : null,
       }
     : {
         title: "",
@@ -90,6 +91,7 @@ const AddWork = ({
         star: 4,
         hasGot: true,
         language: [],
+        info: null,
         script: null,
         editAt: moment(),
       };
@@ -102,9 +104,9 @@ const AddWork = ({
       editAt: work.editAt.format(MOMENT_FORMAT),
     };
 
-    try {
-      if (isEditMode) {
-        const { id } = location.state;
+    if (isEditMode) {
+      const { id } = location.state;
+      try {
         await Promise.all([
           updateWork({
             ...workData,
@@ -114,26 +116,28 @@ const AddWork = ({
           addAuthors(currentAuthors),
         ]);
         message.success("更新作品成功", 1);
-      } else {
-        const isWorkExists = await checkWorkExists(work);
-        if (isWorkExists) {
-          message.warn("该作品已存在", 2);
-          form.resetFields();
-          return;
-        }
+      } catch (error) {
+        message.error("更新作品失败", 2);
+      }
+    } else {
+      const isWorkExists = await checkWorkExists(work);
+      if (isWorkExists) {
+        message.warn("该作品已存在", 2);
+        form.resetFields();
+        return;
+      }
+      try {
         await Promise.all([
           addWork(workData),
           addTags(currentTags),
           addAuthors(currentAuthors),
         ]);
         message.success("添加作品成功", 1);
+      } catch (error) {
+        message.error("添加作品失败", 2);
       }
-      form.resetFields();
-    } catch (error) {
-      message.error("添加作品失败", 2);
-      console.log(error);
-    } finally {
     }
+    form.resetFields();
   };
 
   const handleTagsChange = (tags) => {
@@ -249,8 +253,14 @@ const AddWork = ({
       <Form.Item label="打分" name="star">
         <Rate />
       </Form.Item>
+      <Form.Item label="信息" name="info">
+        <TextArea
+          placeholder="作品目录、时长、来源等"
+          autoSize={{ minRows: 2 }}
+        />
+      </Form.Item>
       <Form.Item label="台本" name="script">
-        <TextArea placeholder="台本" autoSize={{ minRows: 2 }} />
+        <TextArea placeholder="没有台本则不填" autoSize={{ minRows: 2 }} />
       </Form.Item>
       <Form.Item label="时间" name="editAt">
         <DatePicker showTime onChange={handleDateChange} />

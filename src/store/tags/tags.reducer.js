@@ -23,7 +23,7 @@ const tags = (
     case ADD_TAGS:
       return { ...state, error };
     case ADD_TAGS_DONE:
-      return { ...state, tagItems: { ...state.tagItem, ...tags }, error };
+      return { ...state, tagItems: { ...state.tagItems, ...tags }, error };
     case ADD_TAGS_FAIL:
       return { ...state, error };
     default:

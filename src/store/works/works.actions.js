@@ -96,7 +96,8 @@ export const updateWork = (work) => async (dispatch) => {
     payload: { error: null, isOperating: true },
   });
   try {
-    await worksRef.doc(work.id).update(work);
+    console.log(work.id, work);
+    await worksRef.doc(work.id).set(work, { merge: true });
     dispatch({
       type: UPDATE_WORK_DONE,
       payload: { work, isOperating: false },

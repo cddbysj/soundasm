@@ -15,7 +15,8 @@
 - 规范路由配置。
 - 使用 Firebase Storage 来实现上传和下载图片、音频等。[上传文件示例](https://firebase.google.com/docs/storage/web/upload-files?authuser=0#full_example) √ 已实现图片上传至 Firebase Storage
 - moment 时区问题。全局设置为 zh-CN，但是可能由于使用 VPN，时区有时候会切换到美国等地区。
-- 实现基于作者、标签、语言等维度的过滤展示，考虑是在前端实现还是客户端实现？√，前端实现
+- 实现基于作者、标签、语言等维度的过滤展示，考虑是在前端实现还是客户端实现？√，前端实现。
+- 增加针对每个用户的操作记录日志，比如用户 A 上传一个作品，则记录该操作的简要信息，包括添加时间和作品名称。
 
 ## 使用 Material-UI 的网页布局参考
 
