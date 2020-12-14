@@ -71,6 +71,12 @@ const FaqPage = () => {
           这个是做的比较用心的一个网站，收费上非常克制。签到、自己上传资源可以获得积分，积分可以用来获取资源。
         </Paragraph>
         <Paragraph>
+          <a href="https://bbs.level-plus.net/thread.php?fid-128.html">
+            南+ South Plus
+          </a>{" "}
+          也是一个资源共享型的网站，签到或者分享资源可以获取积分，资源非常多，主要是日语音声和中文音声。
+        </Paragraph>
+        <Paragraph>
           <a href="https://www.macgn.com/">萌站</a> 一个 ACG
           交流分享平台，包括游戏、漫画、动画、音声、电影、轻小说等。签到可以获得积分，积分可以用来获取资源。
         </Paragraph>
