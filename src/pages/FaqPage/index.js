@@ -20,8 +20,24 @@ const FaqPage = () => {
         <Paragraph>
           F4A: female for all 作者是女性，目标观众是男性或女性
         </Paragraph>
-        <Paragraph>HFO: hand free orgasm</Paragraph>
-        <Paragraph>Fdom: 调教</Paragraph>
+        <Paragraph>HFO: Hand Free Orgasm</Paragraph>
+        <Paragraph>GFE: Girl Friend Emulation</Paragraph>
+        <Paragraph>Fdom: Female Dominate 即女性扮演主导角色</Paragraph>
+        <Paragraph>Femdom: Female Dominate 即女性扮演主导角色</Paragraph>
+        <Paragraph>Fsub: Female Submissive 即女性扮演顺从角色</Paragraph>
+        <Paragraph>Femsub: Female Submissive 即女性扮演顺从角色</Paragraph>
+        <Paragraph>Creampie: 内射，体内射精</Paragraph>
+        <Paragraph>Milf: 熟女</Paragraph>
+        <Paragraph>Handjob: 手交</Paragraph>
+        <Paragraph>Blowjob: 口交</Paragraph>
+        <Paragraph>Titjob: 乳交</Paragraph>
+        <Paragraph>SPank: 拍打屁股</Paragraph>
+        <Paragraph>Prostate play: 前列腺调教</Paragraph>
+        <Paragraph>Nipple play: 乳头调教</Paragraph>
+        <Paragraph>Dirty Talk: 淫语</Paragraph>
+        <Paragraph>
+          JOI: Jerk Off Instruction 自慰指令，或者说射精管理
+        </Paragraph>
         <Title level={4}>音频来源于哪些平台</Title>
         <Paragraph>
           <a href="https://www.youtube.com/">Youtube</a> 上面有非常多的 ASMR
@@ -33,9 +49,19 @@ const FaqPage = () => {
           GoneWildAudio 是指软色情音频，这里是不少音频的发源地。
         </Paragraph>
         <Paragraph>
+          <a href="https://www.reddup.co/">Reddup</a> 一个视觉更加现代、友好的
+          Reddit 第三方网站，信息展示比 Reddit 更加整洁，推荐使用这个。
+        </Paragraph>
+        <Paragraph>
           <a href="https://soundgasm.net/">Soundgasm</a>{" "}
           一个音频托管网站，上面提到的 GoneWildAudio
           音频基本都托管在这个网站上。
+        </Paragraph>
+        <Paragraph>
+          <a href="https://www.flaru.com/en/soundgasm.net/">Flaru</a>{" "}
+          一个搜索网站，借助这个网站，可以搜索上面 Soundgasm
+          的作品，输入你喜欢的标签和作者进行搜素。 比如 "asmr","fsub","dirty
+          talk","belle_in_the_woods"。
         </Paragraph>
         <Paragraph>
           <a href="https://pastebin.com/">Pastebin</a> 不少 GoneWildAudio
@@ -106,7 +132,10 @@ const FaqPage = () => {
           </a>
         </Paragraph>
         <Title level={4}>步非烟小小的菜单 作品目录</Title>
-        <Paragraph>空缺，已找到目录，但是懒得整理了。</Paragraph>
+        <Paragraph>
+          即步非烟工作室出品的第二季中文音声，有些口味清单的作品还可以，CV
+          个人比较喜欢小烟、绝色、小美、小琳。
+        </Paragraph>
         <Title level={4}>Gone Wild Audio 脚本作者</Title>
         <Paragraph>
           <a href="https://pastebin.com/u/Zerahmot">Zerahmot's Pastebin</a>
